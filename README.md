@@ -1,5 +1,5 @@
 <!-- PROJECT TITLE -->
-<h1 id="toc" align="center">Agile Software Development</h1>
+<h1 id="toc" align="center">DietSprint<br>(Agile Software Development Project)</h1>
 
 <!-- TABLE OF CONTENTS -->
 <h2>Table of Contents</h2>
