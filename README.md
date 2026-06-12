@@ -72,6 +72,49 @@ DietSprint is a lightweight, user-centric web application designed to simplify t
 
 <!-- FEATURES -->
 <h2 id="features">Features</h2>
+<p>
+  The application's codebase is structured into modular subsystems designed to handle business logic, data persistence, and security verification efficiently without external bloat.
+</p>
+
+<h4>Main Routing Subsystem (<code>routes/main.py</code>)</h4>
+<p>
+  This module manages core application routing, view rendering, and stateful session access control. It handles traffic routing and enforces security boundaries across the platform.
+</p>
+<ul>
+    <li>
+        <strong>Access Control Middleware:</strong> Unauthorized endpoint access is blocked using custom decorators to enforce authentication policies.
+        <ul>
+            <li><code>@login_required</code>: Inspects the active user session. If no username is present in <code>session()</code>, the request is treated as unauthenticated and intercepted.</li>
+            <li><code>@registeration_required</code>: Interrogates the database for the user's <code>register_status</code> (a boolean flag). If evaluated as <code>False</code>, the system blocks dashboard access and programmatically redirects the user back to their exact location in the multi-step registration pipeline, restoring their previously cached input data.</li>
+        </ul>
+    </li>
+    <li><strong>Session Management:</strong> Upon successful authentication, user identifiers are bound to server-side sessions to maintain state across subsequent stateless HTTP requests.</li>
+</ul>
+
+<h4>Goal-Setting Subsystem (<code>routes/register.py</code>)</h4>
+<p>
+  This module drives the calculation engine and multi-stage user onboarding pipeline. It processes initial physical metrics to establish foundational health targets.
+</p>
+<ul>
+    <li><strong>Health Metrics Engine:</strong> Processes validated data from client-side forms to calculate the user's Total Daily Energy Expenditure (TDEE) and Body Mass Index (BMI).</li>
+    <li><strong>Target Optimization:</strong> Generates an algorithmic, realistic baseline target weight labeled as <code>primary_goal</code>. This serves as an evidentiary recommendation for the user, while still granting them the flexibility to manually override and input their preferred target.</li>
+    <li><strong>Multi-Step State Persistence:</strong> To mitigate data loss across the multi-page registration sequence, client inputs are preserved continuously within <code>session()</code> memory buffers until the final submission step.</li>
+    <li><strong>Cryptographic Data Protection:</strong> To guarantee credential security, passwords undergo cryptographic salting and hashing utilizing the <code>bcrypt</code> library prior to database serialization.</li>
+</ul>
+
+<h4>Malicious Input Control Subsystem (<code>logic/validation.py</code>)</h4>
+<p>
+  This dedicated validation layer serves as the application's sanitization and data-integrity barrier, processing user entries against strict structural and safety boundaries.
+</p>
+<ul>
+    <li><strong>Input Sanitization:</strong> Intercepts incoming form data to verify data types, preventing common exploits (e.g., blocking alphabetic strings in numeric metric fields) and throwing clear exception messages.</li>
+    <li>
+        <strong>Biometric Boundary Validation:</strong> Enforces health-safety thresholds during input processing.
+        <ul>
+            <li><code>validate_primary_goal()</code>: Runs a predictive calculation on the user’s projected BMI based on their target inputs. If the calculation yields a value indicating an underweight or overweight status, the function flags the anomaly and returns a contextual error message to warn the user before the goal is committed to the system.</li>
+        </ul>
+    </li>
+</ul>
 
 <!-- OVERVIEW -->
 <h2 id="overview">Overview</h2>
