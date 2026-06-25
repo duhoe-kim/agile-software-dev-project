@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Error! | Diet Sprint
+{% endblock %}
+
+{% block content %}
+
+    <div class="border border-primary border-3 rounded mx-5 py-5">
+        <h1 class="text-capitalize fw-bold">{{ error_message }}</h1>
+        <h3>Error Code: {{ error_code}}</h3>
+        <br>
+
+        <p class="fw-light">
+            Sorry! We were not able to find the page you are looking for<br>
+            Please check if you have typed the correct URL / value<br>
+            To continue surfing, please click on "Go Back Home" button!
+        </p>
+        <br>
+        <a href="{{url_for('index')}}"><button class="btn btn-outline-primary text-capitalize">Go back home</button></a>
+    </div>
+        
+        
+{% endblock %}
