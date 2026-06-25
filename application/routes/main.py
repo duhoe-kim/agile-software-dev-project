@@ -4,7 +4,6 @@ from application.logics.validation import *
 
 from application.models.mongoDB.get import *
 from application.models.mongoDB.post import *
-from application.models.api import *
 
 from flask import (
     render_template, redirect, url_for, flash,
