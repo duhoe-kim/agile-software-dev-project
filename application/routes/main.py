@@ -92,12 +92,13 @@ def logout(username):
 
     return redirect(url_for("index"))
     
-@app.route("/home/<username>", methods = ["GET", "POST"])
-@registeration_required
+#load main page (page where functions are at)
+@app.route("/main/<username>", methods = ["GET", "POST"])
+@registration_required
 @login_required
-def main():
-    
-    return render_template("main/home.html")
+def main(username):
+
+    return render_template("main/main.html", username = session["user"])
 
 @app.route("/setting/<username>", methods = ["GET", "POST"])
 @app.route("/setting/<username>/<option>", methods = ["GET", "POST"])
