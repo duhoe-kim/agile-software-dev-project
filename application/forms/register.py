@@ -13,9 +13,12 @@ from wtforms.validators import (
 
 data_required_msg = "Required"
 
+#global variables
+#dict of primary goal choices
 primary_goal_choices = {"lose weight": "lose",
                         "maintain weight": "maintain",
                         "gain weight": "gain"}
+#dict of acitvity level choices
 activity_level_choices = {"Sedentary" : 1.2, 
                           "Light Exercise" : 1.3, 
                           "Moderate Exercise" : 1.5, 
@@ -46,7 +49,10 @@ class RegisterForm(FlaskForm):
             DataRequired(data_required_msg),
             EqualTo("password", message = "Passwords do not match")
         ])
+    
+    #protect the tag string suing Markup
     agree_policy_label = Markup("<a href='/about/privacy-policy'>Privacy Policy</a>")
+    
     agree_policy = BooleanField(
         label = "I have read and agreed with the " + agree_policy_label,
         validators = [
@@ -55,16 +61,16 @@ class RegisterForm(FlaskForm):
     
     submit = SubmitField(label = "Register")
 
-class CurrentBMIForm(FlaskForm): 
+class CurrentBmiForm(FlaskForm): 
     current_weight = DecimalField(
-        label = "Curret Weight:",
+        label = "Current Weight:",
         places = 2,
         validators = [
             DataRequired(f"{data_required_msg}, Weight must be numeric"),
             NumberRange(min = 20, max=150, message = "Weight must be in the range of %(min)d and %(max)d")
         ])
     current_height = DecimalField(
-        label = "Curret Height:",
+        label = "Current Height:",
         places = 2,
         validators = [
             DataRequired(f"{data_required_msg}, Height must be numeric"),
