@@ -54,7 +54,7 @@ def registeration_required(f):
 @app.route("/", methods = ["GET", "POST"])
 def index():
     if session.get("user"):
-        return redirect(url_for("home", username = session["user"]))
+        return redirect(url_for("main"))
     else:
         return redirect(url_for("login"))
 
@@ -96,27 +96,9 @@ def logout(username):
 @app.route("/home/<username>", methods = ["GET", "POST"])
 @registeration_required
 @login_required
-def home(username):
-    daily_calories = get_daily_calories(username)
-    form = MealplanForm()
-
-    if form.validate_on_submit():
-        calories = form.target_calories.data
-        diet = diet_choices[form.diet.data]["field"]
-
-        meal_plan = get_meal_plans(calories, diet)
-        update_user_mealplan(username, meal_plan["meals"], meal_plan["nutrients"])
+def main():
     
-    isEmpty = isEmpty_user_mealplan(username)
-    meals, nutrients = get_user_mealplan(username)
-    
-    return render_template("main/home.html",
-                           username = username,
-                           daily_calories = daily_calories,
-                           isEmpty = isEmpty,
-                           meals = meals,
-                           nutrients = nutrients,
-                           form = form)
+    return render_template("main/home.html")
 
 @app.route("/setting/<username>", methods = ["GET", "POST"])
 @app.route("/setting/<username>/<option>", methods = ["GET", "POST"])
