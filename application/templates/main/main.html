@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Home | Diet Sprint
+{% endblock %}
+
+{% block nav_items %}
+    <a class="nav-item nav-link" href="{{url_for('setting', username=username)}}">Setting</a>
+    <a class="nav-item nav-link" href="{{url_for('logout', username=username)}}">Logout</a>
+{% endblock %}
+
+{% block content %}
+<!-- Recommendation daily calorie intake -->
+<div class="container-fluid background" align="center">
+    <div class="container">
+        <h1 class="py-4">
+            "Main page"
+        </h1>
+
+        <!-- Main functions -->
+        
+    </div>
+</div> 
+{% endblock %}
+
