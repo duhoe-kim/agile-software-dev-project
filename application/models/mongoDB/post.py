@@ -1,12 +1,10 @@
 from application import client
 
 from datetime import date
-##database "test"
-db = client.test
-##collection "user" in database "test"
-users = db.users
-mealplans = db.mealPlans
-preferences = db.preferences
+##database "dietSprintDB"
+db = client.dietSprintDB
+##collection "user" in database "dietSprintDB"
+users = db.user
 
 ##user particulars
 def insert_user(username, password):
@@ -18,7 +16,7 @@ def insert_user(username, password):
 
         "currentWeight": 0,
         "currentHeight": 0,
-        "BMI" : 0,
+        "bmi" : 0,
 
         "goal": "",
         "activityLevel": "",
@@ -27,8 +25,6 @@ def insert_user(username, password):
         "targetDate": "",
         "startDate": "",
 
-        "dailyCalories": 0,
-
         "isCurrentComplete": False,
         "isPrimaryGoalComplete": False,
         "isTargetGoalComplete": False,
@@ -36,16 +32,7 @@ def insert_user(username, password):
         "isComplete": False           
     }
 
-    meal_plan_doc = {
-        "username": username,
-        "isEmpty": True,
-
-        "meals": [],
-        "nutrients": []
-    }
-
     users.insert_one(user_doc)
-    mealplans.insert_one(meal_plan_doc)
 
 def update_username(username, new_username):
     filter = {"username": username}
@@ -55,7 +42,6 @@ def update_username(username, new_username):
     }}
 
     users.update_one(filter, newvalues)
-    mealplans.update_one(filter, newvalues)
         
 def update_password(username, new_password):
     filter = {"username": username}
@@ -65,13 +51,13 @@ def update_password(username, new_password):
     }}
     users.update_one(filter, newvalues)
 
-def update_current_BMI(username, current_weight, current_height, BMI):
+def update_current_bmi(username, current_weight, current_height, bmi):
     filter = {"username": username}
     newvalues = {
         "$set": {
             "currentWeight": current_weight, 
             "currentHeight": current_height,
-            "BMI" : BMI,
+            "bmi" : bmi,
 
             "isCurrentComplete": True
     }}
@@ -153,14 +139,3 @@ def update_user_goal(username, daily_calories):
     }}
 
     users.update_one(filter, newvalues)
-
-def update_user_mealplan(username, meals, nutrients):
-    filter = {"username": username}
-    newvalues = {
-        "$set": {
-            "isEmpty": False,
-            "meals": meals,
-            "nutrients": nutrients
-    }}
-
-    mealplans.update_one(filter, newvalues)
