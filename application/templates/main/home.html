@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Diet Sprint
+{% endblock %}
+
+{% block nav_items %}
+    <a class="nav-item nav-link" id="login" href ="{{url_for('login')}}">Login</a>
+    <a class="nav-item nav-link" id="sign-up" href ="{{url_for('register')}}">Sign Up</a>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid background ">
+    <div class="container mt-5" align="center">
+        <div class="container mt-2 mt-md-4v">
+                <div class="row mb-5">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                    <div class="align-items-center text-start p-5">
+                        <!-- Welcome Statement -->
+                        <h5> 
+                            Set goals and track changes for free.
+                        </h5>
+                        <br><br>
+                        <h1><b >Set the goal.</b><br>
+                            <b style="color:green">The weight follows.</b>
+                        </h1>
+                        <br><br>
+                        <!-- Slogan -->
+                        <h5> 
+                            From goal setting to daily weigh-ins.<br>
+                            Track your progress at a glance with just SlimFit.
+                        </h5>
+                    </div>
+                    </div>
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+                    <div class="text-center p-5">
+                            <img src="{{url_for('static', filename='images/home-e1.png')}}" class="rounded w-100 h-100">
+                    </div>
+                    </div>
+                </div>
+            <br><br><br><br>
+            
+            <div class="container mt-5" align="center">
+                <h5 style="color:green"> 
+                    <b>Key Features</b>
+                </h5>
+                <br><br>
+                <h1><b>Simple, yet powerful</b><br>
+                    <b>The ultimate diet tool</b>
+                </h1>
+                <br><br>
+                <h5> 
+                    Forget about complicated features.<br>
+                    Set goals, track daily, and visualize your journey.
+                </h5>
+            </div>
+
+            <br><br>
+            
+            <div class="container py-5">
+                <div class="row g-4">
+                    
+                    <!-- Card 1: Customized Goal Setting -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 p-4 bg-white rounded-4" style="border: 1px solid #e2e8f0; border-radius: 1rem;">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-3 mb-3" 
+                                style="width: 50px; height: 50px; background-color: #eaf6f0;">
+                                <span style="font-size: 1.5rem;">🎯</span>
+                            </div>
+                            <h5 class="fw-bold mb-2 text-dark">Customized Goal Setting</h5>
+                            <p class="text-muted mb-0" style="line-height: 1.6;">
+                                Enter your current and target weight to automatically calculate a realistic weight loss schedule. Steady and sustainable.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Daily Weight Tracking -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 p-4 bg-white rounded-4" style="border: 1px solid #e2e8f0; border-radius: 1rem;">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-3 mb-3" 
+                                style="width: 50px; height: 50px; background-color: #fff9e6;">
+                                <span style="font-size: 1.5rem;">⚖️</span>
+                            </div>
+                            <h5 class="fw-bold mb-2 text-dark">Daily Weight Tracking</h5>
+                            <p class="text-muted mb-0" style="line-height: 1.6;">
+                                Just 10 seconds a day is all it takes. Log your daily weight, and your graphs and statistics will update automatically.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Visual Progress Graphs -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 p-4 bg-white rounded-4" style="border: 1px solid #e2e8f0; border-radius: 1rem;">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-3 mb-3" 
+                                style="width: 50px; height: 50px; background-color: #f2ebf9;">
+                                <span style="font-size: 1.5rem;">📈</span>
+                            </div>
+                            <h5 class="fw-bold mb-2 text-dark">Visual Progress Graphs</h5>
+                            <p class="text-muted mb-0" style="line-height: 1.6;">
+                                Monitor your weekly and monthly weight changes through intuitive charts. See the trends to plan your next step.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Tracking Reminders -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 p-4 bg-white rounded-4" style="border: 1px solid #e2e8f0; border-radius: 1rem;">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-3 mb-3" 
+                                style="width: 50px; height: 50px; background-color: #fdf0ed;">
+                                <span style="font-size: 1.5rem;">🔔</span>
+                            </div>
+                            <h5 class="fw-bold mb-2 text-dark">Tracking Reminders</h5>
+                            <p class="text-muted mb-0" style="line-height: 1.6;">
+                                Receive a reminder to log your weight at a set time every day. Consistency is what creates real results.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Goal History Management -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 p-4 bg-white rounded-4" style="border: 1px solid #e2e8f0; border-radius: 1rem;">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-3 mb-3" 
+                                style="width: 50px; height: 50px; background-color: #ebf3fc;">
+                                <span style="font-size: 1.5rem;">📋</span>
+                            </div>
+                            <h5 class="fw-bold mb-2 text-dark">Goal History Management</h5>
+                            <p class="text-muted mb-0" style="line-height: 1.6;">
+                                Save all your past fitness goals and achievement history. Your progress history is your greatest motivation.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: BMI & Target Weight Calculator -->
+                    <div class="col-12 col-md-4">
+                        <div class="card h-100 p-4 bg-white rounded-4" style="border: 1px solid #e2e8f0; border-radius: 1rem;">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-3 mb-3" 
+                                style="width: 50px; height: 50px; background-color: #eaf6f0;">
+                                <span style="font-size: 1.5rem;">📊</span>
+                            </div>
+                            <h5 class="fw-bold mb-2 text-dark">BMI & Target Weight Calculator</h5>
+                            <p class="text-muted mb-0" style="line-height: 1.6;">
+                                Input your height and weight to instantly check your current BMI and discover your healthy weight range.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>            
+            
+            <br><br><br>
+
+           
+        </div>
+    </div>
+</div>
+{% endblock %}
