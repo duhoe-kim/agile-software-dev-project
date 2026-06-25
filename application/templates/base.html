@@ -15,6 +15,11 @@
         crossorigin="anonymous">
         <link rel="stylesheet" href="{{url_for('static', filename='styles/base.css')}}">
         <link rel="stylesheet" href="{{url_for('static', filename='styles/form.css')}}">
+        
+        <!-- Custom JS file to run before rendering-->
+        {% block custom_js_init %}
+        {% endblock %}        
+        
         <!--tab-->
         <!--page title-->
         <title>
@@ -28,21 +33,22 @@
         <!--navigation bar-->
         <nav class="navbar navbar-expand-lg navbar-light">
             <!--Logo-->
-            <img class="logo" src="{{url_for('static', filename='images/logo.png')}}" 
-                alt="logo" width="36px" height="36px"
-            />
+            <img class="ml-3" src="{{url_for('static', filename='images/logo.png')}}" 
+                alt="logo" width="50px" height="50px"/>
+        
             <!--Website name-->
-            <a class="navbar-brand">Nutrition Wisdoms</a>
+            <a class="navbar-brand me-auto">Diet Sprint</a>
 
             <!--navbar menu-->
             <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <!--navbar menu items-->
             <div class="px-4 collapse navbar-collapse" id="navbar">
-                <div class="navbar-nav ms-auto">
+                <div class="navbar-nav mx-lg-auto">
                     <!--Home-->
-                    <a class="nav-item nav-link" href ="{{url_for('index')}}">Home</a>
+                    <a class="nav-item nav-link me-lg-5" href ="{{url_for('index')}}">Home</a>
                     <!--About dropdown menu-->
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
@@ -51,12 +57,18 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{url_for('about_us')}}">About us</a>
-                            <a class="dropdown-item" href="{{url_for('privacy_policy')}}">Priacy Policy</a>
+                            <a class="dropdown-item" href="{{url_for('privacy_policy')}}">Privacy Policy</a>
                         </div>
                     </div>
-                    {% block nav_items %}
-                    {% endblock %}
+                
+                    
                 </div>
+
+                <div class="navbar-nav">
+                        {% block nav_items %}
+                        {% endblock %}
+                </div>
+                
             </div>
         </nav>
 
@@ -84,58 +96,58 @@
         {% endwith %}
         
         <!--content block from extended file-->
-        <div class="container py-5" align="center">
-            {% block content %}
-            {% endblock %}
-        </div>
+        {% block content %}
+        {% endblock %}
         
         <!--footer-->
-        <div class="container-fluid mt-auto">
-            <footer class="text-center text-lg-start text-black">
-                <div class="container p-2 pb-0">
-                    <div class="row">
-                        <!--About us-->
-                        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-                            <h6 class="text-uppercase mb-4 font-weight-bold">
-                                About Us
-                            </h6>
-                            <p align="justify">
-                                Nutrition Wisdoms aims to help people keep healthy 
-                                by forming a healthy eating habit.
-                            </p>
-                        </div>
-                        
-                        <!--create division of footer elements when screen<720px-->
-                        <hr class="w-100 clearfix d-md-none" />
-
-                        <!--Site map-->
-                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-                            <h6 class="text-uppercase mb-4 font-weight-bold">Site Map</h6>
-                            <p><a class="text-white" href="{{url_for('about_us')}}">About Us</a></p>
-                            <p><a class="text-white" href="{{url_for('privacy_policy')}}">Privacy Policy</a></p>
-                        </div>
-
-                        <!--create division of footer elements when screen<720px-->
-                        <hr class="w-100 clearfix d-md-none" />
-                        
-                        <!--Contact us-->
-                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-                            <h6 class="text-uppercase mb-4 font-weight-bold">Contact us</h6>
-                            <p><i class="bi bi-house"></i> Singapore, S(599491), SG</p>
-                            <p><i class="bi bi-envelope"></i> contactus_nwisdoms@gmail.com</p>
-                            <p><i class="bi bi-telephone-inbound"></i> +65 6248 9006</p>
-                        </div>
-
+        <footer class="container-fluid mt-auto text-center text-lg-start text-black"> 
+            <div class="container-fluid p-2 pb-0">
+                <div class="row">
+                    <!--About us-->
+                    <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold">
+                            About Us
+                        </h6>
+                        <p align="justify">
+                            Diet Sprint is an intuitive health tracker that 
+                            helps you set personalized weight goals based on your BMI and 
+                            visualize your progress over time through dynamic graphs.
+                        </p>
                     </div>
-                    <div class="row">
-                        <span class="text-center p-2"> © 2023 Copyright: Nutrition Wisdoms. All Rights Reserved. </span>
+                    
+                    <!--create division of footer elements when screen<720px-->
+                    <hr class="w-100 clearfix d-md-none" />
+
+                    <!--Site map-->
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold">Useful Links</h6>
+                        <p><a class="" href="https://www.healthhub.sg/live-healthy/764/its-not-a-small-world-after-all#:~:text=%E2%80%8BBody%20Mass%20Index%20(BMI,from%20your%20height%20and%20weight.&text=A%20BMI%20of%2018.5%20%E2%80%93%2022.9,BMI%20of%2030%20and%20above.">Knowing more about BMI</a></p>
+                        <p><a class="" href="https://www.dynamics.com.sg/services/nutrition.html#:~:text=Chronic%20problems&text=Everyone%20is%20different.,%2C%20cardiovascular%20diseases%2C%20weight%20problems.">Benefits of healthy eating</a></p>
                     </div>
+
+                    <!--create division of footer elements when screen<720px-->
+                    <hr class="w-100 clearfix d-md-none" />
+                    
+                    <!--Contact us-->
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold">Contact us</h6>
+                        <p><i class="bi bi-house"></i> Singapore, S(599491), SG</p>
+                        <p><i class="bi bi-envelope"></i> contactus_diet_sprint@gmail.com</p>
+                        <p><i class="bi bi-telephone-inbound"></i> +65 6248 9006</p>
+                    </div>
+
                 </div>
-            </footer>
-        </div>
+                <div class="row">
+                    <span class="text-center p-2"> © 2023 Copyright: Diet Sprint. All Rights Reserved. </span>
+                </div>
+            </div>
+            
+        </footer>
 
         <!--JS scripts-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+        {% block custom_js %}
+        {% endblock %}
     </body>
 </html>
