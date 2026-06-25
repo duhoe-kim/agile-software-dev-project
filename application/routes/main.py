@@ -23,7 +23,7 @@ def login_required(f):
     
     return wrap
 
-def registeration_required(f):
+def registration_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
         if session.get("user"):
