@@ -13,33 +13,6 @@ from wtforms.validators import (
 
 data_required_msg = "Required"
 
-diet_choices = {
-    "(none)": {"field": "",
-               "description": ""},
-    "Gluten free": {"field": "glutenFree",
-                    "description": ""},
-    "Ketogenic": {"field": "ketogenic",
-                    "description": ""},
-    "Pescetarian": {"field": "pescetarian",
-                    "description": ""},
-    "Paleo": {"field": "paleo",
-                "description": ""},
-    "Primal": {"field": "primal",
-                "description": ""},
-    "Low FODMAP": {"field": "lowfodmap",
-                    "description": ""},
-    "Whole 30": {"field": "whole30",
-                    "description": ""},
-    "Vegetarian": {"field": "vegetarian",
-                    "description": ""},
-    "Lacto-Vegetarian": {"field": "lactovegetarian",
-                            "description": ""},
-    "Ovo-Vegetarian": {"field": "ovovegetarian",
-                        "description": ""},
-    "Vegan": {"field": "vegan",
-              "description": ""}
-}
-
 class LoginForm(FlaskForm):       
     username = StringField(
         label = "Username:",
@@ -53,20 +26,6 @@ class LoginForm(FlaskForm):
         ])
 
     submit = SubmitField(label = "Login")
-    
-class MealplanForm(FlaskForm):
-    target_calories = DecimalField(
-        label = "Calories", 
-        places = 2,
-        validators =[
-            DataRequired("Please enter your target daily calories"),
-            NumberRange(min = 1000, max = 5000, message = "Please enter a valid number for your daily calories")
-        ])
-    diet = SelectField(
-        label = "Preferred diet (optional)",
-        choices = list(diet_choices.keys()))
-
-    submit = SubmitField(label = "Get today's mealplan")
 
 class UpdateUsernameForm(FlaskForm):
     def validate_username(form, username_to_check):
