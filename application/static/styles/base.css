@@ -1,11 +1,24 @@
 :root {
-    --frame-color: #8dcbee;
+    --frame-color: #ffffff;
+    --bg-color: #d8f6db;
 }
 
 nav {
-    background-color: var(--frame-color)
+    background-color: var(--frame-color);
+}
+
+
+.background {
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    height: 100%;
 }
 
 footer {
     background-color: var(--frame-color);
+}
+
+* {
+    margin: 0;
+    padding: 0;   
 }

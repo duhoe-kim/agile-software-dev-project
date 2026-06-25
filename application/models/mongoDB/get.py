@@ -1,12 +1,10 @@
 from application import client
 
 from datetime import date
-##database "test"
-db = client.test
-##collection "user" in database "test"
+##database "dietSprintDB"
+db = client.dietSprintDB
+##collection "user" in database "dietSprintDB"
 users = db.users
-mealPlans = db.mealPlans
-preferences = db.preferences
 
 def find_username(username):
     if users.find_one({"username": username}):
@@ -41,11 +39,11 @@ def get_current(username):
 
     return current_weight, current_height
 
-def get_current_BMI(username):
-    current_BMI_json = users.find_one({"username": username}, {"BMI": 1})
-    current_BMI = current_BMI_json["BMI"]
+def get_current_bmi(username):
+    current_bmi_json = users.find_one({"username": username}, {"bmi": 1})
+    current_bmi = current_bmi_json["bmi"]
 
-    return current_BMI
+    return current_bmi
 
 def get_user_particulars(username):
     user_particulars_json = users.find_one({"username": username},
@@ -95,17 +93,3 @@ def get_register_step_status(username):
     is_target_goal_complete = register_step_status_json["isTargetGoalComplete"]
 
     return is_current_complete, is_primary_goal_complete, is_target_goal_complete
-
-def isEmpty_user_mealplan(username):
-    isEmpty_json = mealPlans.find_one({"username": username}, {"isEmpty": 1})
-    isEmpty = isEmpty_json["isEmpty"]
-
-    return isEmpty
-
-def get_user_mealplan(username):
-    mealplan_info_json = mealPlans.find_one({"username": username}, 
-                                             {"meals": 1, "nutrients": 1})
-    meals = mealplan_info_json["meals"]
-    nutrients = mealplan_info_json["nutrients"]
-
-    return meals, nutrients

@@ -1,10 +1,10 @@
 from application import app
 from application.forms.main import *
 from application.logics.validation import *
+from application.routes.data import *
 
 from application.models.mongoDB.get import *
 from application.models.mongoDB.post import *
-from application.models.api import *
 
 from flask import (
     render_template, redirect, url_for, flash,
@@ -13,6 +13,9 @@ from flask import (
 from functools import wraps
 import bcrypt
 
+#session["name"] is used to verify if user has logged in
+#if it is unable to get None from session["name"] => user not logged in
+#else logged in
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -24,7 +27,9 @@ def login_required(f):
     
     return wrap
 
-def registeration_required(f):
+#check if the user with the username has completed the registeration steps
+#using the status store in the user database
+def registration_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
         if session.get("user"):
@@ -36,14 +41,14 @@ def registeration_required(f):
         if is_complete == True:
             return f(*args, **kwargs)
         else:
-            flash("Please complete your registeration steps before proceeding", category = "warning")
+            flash("Please complete your registration steps before proceeding", category = "warning")
             
             username = session["user"]
             session["user"] = None
             is_current_complete, is_primary_goal_complete, is_target_goal_complete = get_register_step_status(username)
                 
             if is_current_complete == False:
-                return redirect(url_for("current_BMI", username = username))
+                return redirect(url_for("current_bmi", username = username))
             elif is_primary_goal_complete == False:
                 return redirect(url_for("primary_goal", username = username))
             elif is_target_goal_complete == False:
@@ -51,13 +56,22 @@ def registeration_required(f):
     
     return wrap
 
+#if user logged in => redirect to home page with meal planner
+#if user not logged in => redirect to login page
 @app.route("/", methods = ["GET", "POST"])
 def index():
     if session.get("user"):
-        return redirect(url_for("home", username = session["user"]))
+        return redirect(url_for("main", username = session["user"]))
     else:
-        return redirect(url_for("login"))
+        return redirect(url_for("home"))
 
+#load homepage
+@app.route("/home")
+def home():
+    
+    return render_template("main/home.html")
+
+#load login page
 @app.route("/login", methods = ["GET", "POST"])
 def login():
     form = LoginForm()
@@ -79,45 +93,30 @@ def login():
                 return redirect(url_for("index"))
             else: raise Exception
         except Exception:
-            flash("Bad username or password. Please try again", category = "error")
+            flash("Incorrect username or password. Please try again", category = "error")
 
     return render_template("main/login.html",
                            form = form)
 
-@app.route("/logout/<username>", methods = ["GET"])
+#set session["name"] as None to logout
+@app.route("/logout", methods = ["GET"])
 @login_required
-def logout(username):
+def logout():
     session["user"] = None
 
     flash("Logout Successful", category = "success")
 
-    return redirect(url_for("index"))
-    
-@app.route("/home/<username>", methods = ["GET", "POST"])
-@registeration_required
+    return redirect(url_for("home"))
+
+#load main page (page where functions are at)
+@app.route("/main/<username>", methods = ["GET", "POST"])
+@registration_required
 @login_required
-def home(username):
-    daily_calories = get_daily_calories(username)
-    form = MealplanForm()
+def main(username):
 
-    if form.validate_on_submit():
-        calories = form.target_calories.data
-        diet = diet_choices[form.diet.data]["field"]
+    return render_template("main/main.html", username = username)
 
-        meal_plan = get_meal_plans(calories, diet)
-        update_user_mealplan(username, meal_plan["meals"], meal_plan["nutrients"])
-    
-    isEmpty = isEmpty_user_mealplan(username)
-    meals, nutrients = get_user_mealplan(username)
-    
-    return render_template("main/home.html",
-                           username = username,
-                           daily_calories = daily_calories,
-                           isEmpty = isEmpty,
-                           meals = meals,
-                           nutrients = nutrients,
-                           form = form)
-
+#load setting menu
 @app.route("/setting/<username>", methods = ["GET", "POST"])
 @app.route("/setting/<username>/<option>", methods = ["GET", "POST"])
 @login_required
@@ -184,28 +183,29 @@ def setting(username, option = "change-username"):
             if current_error == True:
                 break
             else:
-                BMI = calculate_BMI(new_current_weight, new_current_height)
-                update_current_BMI(username, new_current_weight, new_current_height, BMI)
+                bmi = calculate_bmi(new_current_weight, new_current_height)
+                update_current_bmi(username, new_current_weight, new_current_height, bmi)
 
                 session["current_weight"] = new_current_weight
                 session["current_height"] = new_current_height
                 flash("Successfully updated your current weight and height", category = "success")
 
                 break
-    
+
+    #update user primary goal
     goal_form = UpdateGoalForm(primary_goal = session["primary_goal_selected"], 
                                 activity_level = session["activity_level_selected"])
     
     if goal_form.submit_goal.data and goal_form.validate_on_submit():
         session["primary_goal_selected"] = goal_form.primary_goal.data
 
-        current_BMI = get_current_BMI(username)
+        current_bmi = get_current_bmi(username)
         new_primary_goal = primary_goal_choices[goal_form.primary_goal.data]
         new_activity_level = activity_level_choices[goal_form.activity_level.data]
 
         while(True):
             try:
-                validate_primary_goal(current_BMI, new_primary_goal)
+                validate_primary_goal(current_bmi, new_primary_goal)
             except Exception as e:
                 flash(e, category = "warning")
                 break
@@ -218,6 +218,7 @@ def setting(username, option = "change-username"):
                 flash("Successfully updated your goal", category = "success")                
                 break
 
+    #update user target goal
     target_form = UpdateTargetForm()
 
     if target_form.submit_target.data and target_form.validate_on_submit():
@@ -228,9 +229,9 @@ def setting(username, option = "change-username"):
             try:
                 primary_goal = get_primary_goal(username)
                 validate_target_weight(session["current_weight"], new_target_weight, primary_goal)
-                validate_target_BMI(new_target_weight, session["current_height"])
+                validate_target_bmi(new_target_weight, session["current_height"])
 
-                adc = calculate_ADC(session["current_weight"], new_target_weight, new_target_date)
+                adc = calculate_adc(session["current_weight"], new_target_weight, new_target_date)
                 current_daily_calories = get_daily_calories(username)
                 
                 validate_target(adc, current_daily_calories)
@@ -269,6 +270,7 @@ def setting(username, option = "change-username"):
                             current_target_weight = session["target_weight"],
                             current_target_date = session["target_date"])
 
+#update session
 def set_current_session(username):
     session["current_weight"], session["current_height"] = get_current(username)
 
@@ -286,3 +288,6 @@ def set_goal_session(username):
         if value == primary_goal: session["primary_goal_selected"] = key
     for key, value in activity_level_choices.items():
         if value == activity_level: session["activity_level_selected"] = key
+
+
+
